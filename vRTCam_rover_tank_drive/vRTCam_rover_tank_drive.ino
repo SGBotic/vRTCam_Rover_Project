@@ -36,7 +36,7 @@
 #define jsRevMaxVal 0
 
 // set the maximum speed of motor
-unsigned char maxPWMValue = 120;
+unsigned char maxPWMValue = 200;
 
 unsigned char  dataType;
 unsigned int vRTCamData[VRTCAM_DATA_SIZE];
@@ -96,33 +96,37 @@ void loop() {
 void leftMotorStop() {
   digitalWrite(in1, LOW);
   digitalWrite(in2, LOW);
-  //Serial.println("left motor stopped ");
+  Serial.println("left motor stopped ");
   analogWrite(enA, 0); // stop left motor
 }
 
-void leftMotorRev(int val) {
+void leftMotorRev(int valLefRev) {
   digitalWrite(in1, HIGH);
   digitalWrite(in2, LOW);
 
   // mapping the output of vRTCam's left motor to PWM
-  // val is positive value
-  int pwmOutput = map(val, 0, 255, 0 , maxPWMValue);
+  // convert valLefRev to positive value
+  valLefRev = valLefRev * (-1);
+  int pwmOutput = map(valLefRev, 0, 255, 0 , maxPWMValue);
   analogWrite(enA, pwmOutput); // Send PWM signal to left motor
-  //Serial.print("left motor fwd: ");
-  //Serial.println(pwmOutput);
+  Serial.print("left motor rev - val: ");
+  Serial.print(valLefRev);
+  Serial.print("  PWM: ");
+  Serial.println(pwmOutput);
 }
 
-void leftMotorFwd(int val) {
+void leftMotorFwd(int valLeftFwd) {
   digitalWrite(in1, LOW);
   digitalWrite(in2, HIGH);
 
   // mapping the output of vRTCam's left motor to PWM
-  // val is negative value
-  int pwmOutput = map(val, 0, -255, 0 , maxPWMValue);
+  // valLeftFwd is positive value
+  int pwmOutput = map(valLeftFwd, 0, 255, 0 , maxPWMValue);
   analogWrite(enA, pwmOutput); // Send PWM signal to left motor
-
-  //Serial.print("left motor rev: ");
-  //Serial.println(pwmOutput);
+  Serial.print("left motor fwd - val: ");
+  Serial.print(valLeftFwd);
+  Serial.print("   PWM: ");
+  Serial.println(pwmOutput);
 }
 void rightMotorStop() {
   digitalWrite(in3, LOW);
@@ -132,26 +136,31 @@ void rightMotorStop() {
   //Serial.println("right motor stopped ");
 }
 
-void rightMotorRev(int val) {
+void rightMotorRev(int valRightRev) {
   digitalWrite(in3, HIGH);
   digitalWrite(in4, LOW);
 
   // mapping the output of vRTCam's right motor to PWM
-  // val is positive value
-  int pwmOutput = map(val, 0, 255, 0 , maxPWMValue);
+  // convert valRightRev to positive value
+  valRightRev = valRightRev * (-1);
+  int pwmOutput = map(valRightRev, 0, 255, 0 , maxPWMValue);
   analogWrite(enB, pwmOutput);
-  //Serial.print("right motor fwd: ");
-  //Serial.println(pwmOutput);
+  Serial.print("right motor fwd - val: ");
+  Serial.print(valRightRev);
+  Serial.print("   PWM: ");
+  Serial.println(pwmOutput);
 }
 
-void rightMotorFwd(int val) {
+void rightMotorFwd(int valRightFwd) {
   digitalWrite(in3, LOW);
   digitalWrite(in4, HIGH);
 
   // mapping the output of vRTCam's right motor to PWM
-  // val is negative value
-  int pwmOutput = map(val, 0, -255, 0 , maxPWMValue);
+  // valRightFwd is positive value
+  int pwmOutput = map(valRightFwd, 0, 255, 0 , maxPWMValue);
   analogWrite(enB, pwmOutput);
-  //Serial.print("right motor rev: ");
-  //Serial.println(pwmOutput);
+  Serial.print("right motor rev - val: ");
+  Serial.print(valRightFwd);
+  Serial.print("   PWM: ");
+  Serial.println(pwmOutput);
 }
